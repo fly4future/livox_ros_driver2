@@ -1,4 +1,16 @@
 # judge which cmake codes to use 
+if(NOT DEFINED ROS_EDITION)
+  set(ROS_EDITION "ROS2")
+endif()
+if(NOT DEFINED DISTRO_ROS AND DEFINED ENV{ROS_DISTRO})
+  set(DISTRO_ROS "$ENV{ROS_DISTRO}")
+endif()
+if(NOT DEFINED ROS_EDITION)
+  set(ROS_EDITION "ROS2")
+endif()
+if(NOT DEFINED DISTRO_ROS AND DEFINED ENV{ROS_DISTRO})
+  set(DISTRO_ROS "$ENV{ROS_DISTRO}")
+endif()
 if(ROS_EDITION STREQUAL "ROS1")
 
   # Copyright(c) 2019 livoxtech limited.
@@ -246,11 +258,15 @@ else(ROS_EDITION STREQUAL "ROS2")
   )
 
   ## make sure the livox_lidar_sdk_shared library is installed
-  find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so /usr/local/lib REQUIRED)
+  find_library(LIVOX_LIDAR_SDK_LIBRARY liblivox_lidar_sdk_shared.so PATHS /usr/local/lib NO_DEFAULT_PATH REQUIRED)
 
   ##
   find_path(LIVOX_LIDAR_SDK_INCLUDE_DIR
     NAMES "livox_lidar_api.h" "livox_lidar_def.h"
+    PATHS /usr/local/include
+    NO_DEFAULT_PATH
+    PATHS /usr/local/include
+    NO_DEFAULT_PATH
     REQUIRED)
 
   ## PCL library
